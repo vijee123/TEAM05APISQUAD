@@ -7,6 +7,8 @@ public class Commons {
 	private static float batchId;
 	private static String batchName;
 	private static String userId;
+	private static float batchId2;
+	private static String batchName2;
 		
 	public static int getProgramId() {
 		return programId;
@@ -40,6 +42,20 @@ public class Commons {
 	}
 	public static void setuserId(String userId) {
 		Commons.userId = userId;
+	}
+	
+	public static float getbatchId1() {
+		return batchId;
+	}
+	public static void setbatchId1(float batchId1) {
+		Commons.batchId = batchId1;
+	}
+	
+	public static String getbatchName1() {
+		return batchName;
+	}
+	public static void setbatchName1(String batchName1) {
+		Commons.batchName = batchName1;
 	}
 	
 	

@@ -206,4 +206,21 @@ public class CommonUtils {
             throw new RuntimeException("Failed to write PUT response to Excel", e);
         }
     }
+    
+    
+    public static void validateGetResponseSchema(Response response, String scenario) {
+	    String schemaPath;
+	    
+	    if (scenario.contains("valid Program Id")) {
+	        schemaPath = endpoints.getString("getBatchesByProgramIdSchemaPath");
+//	    } else if (scenario.contains("invalid")) {
+//	        schemaPath = endpoints.getString("errorResponseSchemaPath");
+//	    } else {
+//	        schemaPath = endpoints.getString("defaultSchemaPath");
+//	    }
+	    
+	    validateResponseSchema(response, schemaPath);
+	    }
+	
+	}
 }
