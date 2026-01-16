@@ -9,6 +9,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.testng.Assert;
 import utilities.CommonUtils;
 import utilities.TokenManager;
+
 import commons.Commons;
 import payload.ProgramPayload;
 import pojo.ProgramPojo;
@@ -31,8 +32,10 @@ public class ProgramRequest extends CommonUtils{
 		return given()
 				.header("Authorization", "Bearer " + TokenManager.getToken());
 	}
-	public  void createProgram(String scenario)
+
+	public  void createProgram(String scenario) 
 			throws IOException, InvalidFormatException, ParseException {
+
 		Map<String, Object> programDetails = new ProgramPayload().getDataFromExcel(scenario);
 		if(programDetails != null) {
 			if(programDetails.get("programPojo") != null) {
@@ -43,6 +46,7 @@ public class ProgramRequest extends CommonUtils{
 			}
 		}
 	}
+
 	public RequestSpecification buildRequest(RequestSpecification requestSpec) {
 		if (requestSpec == null) {
 			throw new IllegalStateException("RequestSpecification is not initialized.");
@@ -60,28 +64,33 @@ public class ProgramRequest extends CommonUtils{
 			return given()
 					.header("Authorization", "Bearer " + TokenManager.getToken());
 		}
+
 		// Set content type from currentRow
 		requestSpec.contentType(currentRow.get("ContentType"));
 		// Conditionally add the request body
 		if (!scenarioName.contains("WithoutRequestBody")
 				&& !scenarioName.contains("Get")
 				&& !scenarioName.contains("Delete")
-				)
+				) 
 		{
 			requestSpec.body(programPojo);
 		}
 		return requestSpec;
 	}
+
 	public Response sendRequest(RequestSpecification requestSpec) {
+
 		String endpoint = currentRow.get("EndPoint");
 		response = CommonUtils.getResponse(requestSpec,endpoint);
 		return response;
 	}
+
 	public int getStatusCode() {
 		String expectedStatusCodeString = currentRow.get("StatusCode");
 		int expectedStatusCode = (int) Double.parseDouble(expectedStatusCodeString); // Convert "201.0" to 201
 		return expectedStatusCode;
 	}
+
 	public String getStatusText() {
 		String scenarioName = currentRow.get("ScenarioName");
 		if(!scenarioName.equalsIgnoreCase("Invalid Endpoint")&&
@@ -96,6 +105,7 @@ public class ProgramRequest extends CommonUtils{
 			return null;
 		}
 	}
+
 	public void saveResponseBody(Response response) {
 		int programId = response.jsonPath().getInt("programId");
 		System.out.println("PrograId:"+programId);
@@ -108,9 +118,10 @@ public class ProgramRequest extends CommonUtils{
 	}
 		
 	public Response sendPutRequest(RequestSpecification requestSpec,String putEndpoint) {
+
 		String endpoint = currentRow.get("EndPoint");
 		System.out.println("PutEndPoint:"+putEndpoint);
-		// Determine if the endpoint needs an ID or Name
+		// Determine if the endpoint needs an ID or Name 
 		if (putEndpoint.contains("Id")) {
 			System.out.println("CommonProgramId:"+Commons.getProgramId());
 			endpoint += currentRow.get("ScenarioName").contains("InvalidID")
@@ -118,7 +129,7 @@ public class ProgramRequest extends CommonUtils{
 		} else if (putEndpoint.contains("Name")) {
 			endpoint += currentRow.get("ScenarioName").contains("InvalidName")
 					? INVALID_PROGRAM_NAME:Commons.getProgramName();
-		}
+		} 
 		response = CommonUtils.getResponse(requestSpec,endpoint);
 		return response;
 	}
@@ -126,28 +137,36 @@ public class ProgramRequest extends CommonUtils{
 	public void validateProgramResponseBodyDetails(Response response) {
 		String actualProgramName = response.jsonPath().getString("programName");
 		Assert.assertEquals(actualProgramName, currentRow.get("ProgramName"), "Program Name in response does not match!");
+
 		String actualProgramDescription = response.jsonPath().getString("programDescription");
 		System.out.println(currentRow);
 		Assert.assertEquals(actualProgramDescription, currentRow.get("ProgramDesc"), "Program Description in response does not match!");
+
 		String actualProgramStatus = response.jsonPath().getString("programStatus");
 		Assert.assertEquals(actualProgramStatus, currentRow.get("ProgramStatus"), "Program Status in response does not match!");
 	}
+
 	public void validateGetProgramIDResponseBodyDetails(Response response) {
 		int actualprogramId = response.jsonPath().getInt("programId");
 		Assert.assertEquals(actualprogramId, Commons.getProgramId(), "Program Id in response does not match!");
 		String schemaPath = endpoints.getString("getProgramByIDSchemaPath");
 		CommonUtils.validateResponseSchema(response,schemaPath);	}
+
 	public void validateGetAllProgramResponseBody(Response response)
 	{
 		String schemaPath = endpoints.getString("getAllProgramsSchemaPath");
 		CommonUtils.validateResponseSchema(response,schemaPath);
+
 	}
 	public void validateGetAllProgramUsersResponseBody(Response response)
 	{
 		String schemaPath = endpoints.getString("getAllProgramUsersSchemaPath");
 		CommonUtils.validateResponseSchema(response,schemaPath);
+
 	}
+
 	public RequestSpecification addPathParamForDeleteRequest(RequestSpecification requestSpec) {
+
 		if (requestSpec == null) {
 			throw new IllegalStateException("RequestSpecification is not initialized.");
 		}
@@ -157,5 +176,7 @@ public class ProgramRequest extends CommonUtils{
 			valueOfProgramId = Integer.parseInt(currentRow.get("ProgramId").toString().substring(0, currentRow.get("ProgramId").toString().indexOf(".")));
 		}
 		return requestSpec.contentType(currentRow.get("ContentType")).pathParam("programId", valueOfProgramId);
+
 	}
+
 }

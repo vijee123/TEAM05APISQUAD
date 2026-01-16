@@ -1,226 +1,94 @@
 {
-
   "$schema": "http://json-schema.org/draft-04/schema#",
-
   "type": "array",
-
   "items": [
-
     {
-
       "type": "object",
-
       "properties": {
-
         "programId": {
-
           "type": "integer"
-
         },
-
         "programName": {
-
           "type": "string"
-
         },
-
         "programDescription": {
-
           "type": "string"
-
         },
-
         "programStatus": {
-
           "type": "string"
-
         },
-
         "programUsers": {
-
           "type": "array",
-
           "items": [
-
             {
-
               "type": "object",
-
               "properties": {
-
                 "userId": {
-
                   "type": "string"
-
                 },
-
                 "userFirstName": {
-
                   "type": "string"
-
                 },
-
                 "userLastName": {
-
                   "type": "string"
-
                 },
-
                 "userMiddleName": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userPhoneNumber": {
-
                   "type": "string"
-
                 },
-
                 "userLocation": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userTimeZone": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userLinkedinUrl": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userEduUg": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userEduPg": {
-
-                  "type": "null"
-
+                  "type": ["string", "null"]
                 },
-
                 "userComments": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userVisaStatus": {
-
-                  "type": "string"
-
+                  "type": ["string", "null"]
                 },
-
                 "userLoginEmail": {
-
                   "type": "string"
-
                 }
-
               },
-
               "required": [
-
                 "userId",
-
                 "userFirstName",
-
                 "userLastName",
-
-                "userMiddleName",
-
                 "userPhoneNumber",
-
-                "userLocation",
-
-                "userTimeZone",
-
-                "userLinkedinUrl",
-
-                "userEduUg",
-
-                "userEduPg",
-
-                "userComments",
-
-                "userVisaStatus",
-
                 "userLoginEmail"
-
               ]
-
             }
-
           ]
-
         },
-
         "creationTime": {
-
           "type": "string"
-
         },
-
         "lastModTime": {
-
           "type": "string"
-
         }
-
       },
-
       "required": [
-
         "programId",
-
         "programName",
-
         "programDescription",
-
         "programStatus",
-
         "programUsers",
-
         "creationTime",
-
         "lastModTime"
-
       ]
-
     }
-
   ]
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

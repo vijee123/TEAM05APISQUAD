@@ -140,6 +140,5 @@ public class UserLoginRequests extends CommonUtils {
     public String getStatusText() {
         return currentRow.get("StatusText");
     }
-    
-
+   
 }
