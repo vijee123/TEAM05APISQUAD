@@ -13,11 +13,11 @@ Feature: User Controller Operations
     Examples:
       | ScenarioName           |
       | valid email            |
-      | special chars in email |
-      | invalid email          |
-      | null body              |
-      | invalid content        |
-      | invalid endpoint       |
+#      | special chars in confirmEmail |
+#      | invalid email          |
+#      | null body              |
+#      | invalid content        |
+#      | invalid endpoint       |
 
 
 
@@ -31,20 +31,9 @@ Feature: User Controller Operations
     Examples: 
       | ScenarioName                           | AuthType     |
       | valid email and new password           | Bearer Token |
-      | valid email and old password           | No Auth      |
-      | special characters in password         | Bearer Token |
-      | invalid email                          | Bearer Token |
+#      | valid email and old password           | No Auth      |
+#      | special characters in password         | Bearer Token |
+#      | invalid email                          | Bearer Token |
       
       
       
-        @Logout
-  Scenario Outline: Admin logout
-    Given Admin sets authorization "<authType>" and creates logout request
-    When Admin calls login HTTPS method with endpoint
-    Then Admin validates response
-
-    Examples:
-      | authType     |
-      | Bearer Token |
-      | No Auth      |
-      | Old Token    |

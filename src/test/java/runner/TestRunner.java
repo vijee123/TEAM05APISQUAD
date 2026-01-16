@@ -15,7 +15,7 @@ import io.cucumber.testng.CucumberOptions;
 		        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" // Extent report
 				},
 		monochrome=false,  //console output color
-		features = {"src/test/resources/Feature/01UserLoginModule.feature" },
+		features = {"src/test/resources/Feature/03UserForgotPassword.feature" },
 		glue= {"stepDefinitions"},
 	//	tags = "@post",
 		dryRun = false

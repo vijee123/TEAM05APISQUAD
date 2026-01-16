@@ -69,8 +69,8 @@ public class UserLoginRequests extends CommonUtils {
      */
     public RequestSpecification buildForgotPasswordBody(RequestSpecification reqSpec) {
         Map<String, String> body = new HashMap<>();
-        String email = (currentRow.get("email") != null) ? currentRow.get("email").trim() : "";
-        body.put("userLoginEmailId", email);
+        String EmailId = (currentRow.get("EmailId") != null) ? currentRow.get("EmailId").trim() : "";
+        body.put("userLoginEmailId", EmailId);
         return reqSpec.body(body);
     }
 
@@ -78,10 +78,10 @@ public class UserLoginRequests extends CommonUtils {
      * Reuses UserLoginPojo to build a Reset Password body (email + new password).
      */
     public RequestSpecification buildResetPasswordBody(RequestSpecification reqSpec) {
-        String email = currentRow.get("email").trim();
-        String password = currentRow.get("password").trim();
+        String EmailId = currentRow.get("EmailId").trim();
+        String Password = currentRow.get("Password").trim();
         
-        UserLoginPojo resetData = new UserLoginPojo(email, password);
+        UserLoginPojo resetData = new UserLoginPojo(EmailId, Password);
         return reqSpec.body(resetData);
     }
 
@@ -110,11 +110,22 @@ public class UserLoginRequests extends CommonUtils {
      */
     public void saveToken(Response response) {
         if (response.getStatusCode() == 200 || response.getStatusCode() == 201) {
+            // Extracting values using jsonPath
             String token = response.jsonPath().getString("token");
             String uId = response.jsonPath().getString("userId");
             
-            if (token != null) TokenManager.setToken(token);
-            if (uId != null) TokenManager.setUserId(uId);
+            // Storing values in the TokenManager for use in subsequent steps
+            if (token != null && !token.isEmpty()) {
+                TokenManager.setToken(token);
+                System.out.println("Token saved successfully.");
+            }
+            
+            if (uId != null && !uId.isEmpty()) {
+                TokenManager.setUserId(uId);
+                System.out.println("User ID saved successfully: ${uId}");
+            }
+        } else {
+            System.out.println("Login failed with status Token and UserID not saved.");
         }
     }
 
@@ -129,4 +140,6 @@ public class UserLoginRequests extends CommonUtils {
     public String getStatusText() {
         return currentRow.get("StatusText");
     }
+    
+
 }
