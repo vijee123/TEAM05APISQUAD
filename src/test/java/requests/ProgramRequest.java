@@ -9,7 +9,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.testng.Assert;
 import utilities.CommonUtils;
 import utilities.TokenManager;
-import utilities.TokenManager.TokenManager1;
 import commons.Commons;
 import payload.ProgramPayload;
 import pojo.ProgramPojo;
@@ -28,9 +27,8 @@ public class ProgramRequest extends CommonUtils{
 	
 	public RequestSpecification setAuth() {
 		RestAssured.baseURI = endpoints.getString("baseUrl");
-		TokenManager.setToken("");
 		return given()
-				.header("Authorization", "Bearer " + TokenManager1.getToken());
+				.header("Authorization", "Bearer " + TokenManager.getToken());
 	}
 
 	public  void createProgram(String scenario) 

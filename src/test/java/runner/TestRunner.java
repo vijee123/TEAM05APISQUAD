@@ -1,7 +1,6 @@
 package runner;
 
 import org.testng.annotations.DataProvider;
-
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
@@ -15,9 +14,9 @@ import io.cucumber.testng.CucumberOptions;
 		        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" // Extent report
 				},
 		monochrome=false,  //console output color
-		features = {"src/test/resources/Feature/05ProgramBatchModule.feature" },
+		features = {"src/test/resources/Feature/" },
 		glue= {"stepDefinitions"},
-	//	tags = "@post",
+		//tags = "@getbatchbyprogramid",
 		dryRun = false
  				
 		)

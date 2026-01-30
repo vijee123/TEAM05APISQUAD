@@ -69,15 +69,15 @@ public class ProgramBatchSteps {
 	        /*************************Response validation based on scenario******************/
 	        if (scenario.contains("Get")) {
 	            // GET requests
-	            if (actualStatusCode == 200) {
+	            if (batchrequest.getStatusCode() == 200) {
 	                CommonUtils.validateGetResponseSchema(response, scenario);
 	                if (scenario.contains("valid Program Id")) {
 	                    batchrequest.validateGetBatchByProgramIdResponse(response);
 	                }
-	            }
+	              }
 	        } else if (!scenario.contains("Delete")) {
 	            // POST/PUT requests 
-	            if (actualStatusCode == 200 || actualStatusCode == 201) {
+	            if (batchrequest.getStatusCode() == 200 || batchrequest.getStatusCode() == 201) {
 	                batchrequest.saveResponseBody(response);
 	                batchrequest.validateBatchResponseBodyDetails(response);
 	            }

@@ -15,7 +15,7 @@
     Examples:
       | ScenarioName                    |
       | valid credentials               |
-      | invalid method					|
+      | invalid method									|
       | special chars in email          |
       | special chars in password       |
       | numbers in email                |

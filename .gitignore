@@ -13,7 +13,7 @@ target/
 .DS_Store
 Thumbs.db
 
-allure-results/
+/allure-results/
 test-output/
 Team5APISquadLog.txt
 testng.xml

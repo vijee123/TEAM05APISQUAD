@@ -16,13 +16,17 @@ public class TokenManager {
     }
 
     public static String getToken() {
+    	 token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtNUBnbWFpbC5jb20iLCJpYXQiOjE3NjkwOTQxNzUsImV4cCI6MTc2OTEyMjk3NX0.0eQEEPpSTzM50uTum044qejCWIyhy_KClsMbrNWSye5FJAyBx0ySffbfLzmUUiGw_xlwgY9tptd7NQ7_rboDxQ";
+    	 
         if (token == null || token.isEmpty()) {
             throw new RuntimeException("Login Token is missing!");
         }
         return token;
     }
+    
 
-    // --- New Methods for token1 ---
+
+//    // --- New Methods for token1 ---
     public static void setToken1(String generatedToken) {
         token1 = generatedToken;
         LOGGER.info("Token1 (Forgot Password) updated.");
@@ -34,7 +38,8 @@ public class TokenManager {
         }
         return token1;
     }
-
+    
+    
     public static void setDynamicPassword(String pass) {
         dynamicPassword = pass;
     }
@@ -75,10 +80,8 @@ public class TokenManager {
         // Get token (optionally provide default/test token if none is set)
         public static String getToken() {
             if (token == null || token.isEmpty()) {
-                // Optional: default token from team5 for testing
-               // token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtNUBnbWFpbC5jb20iLCJpYXQiOjE3NjgzOTkyODYsImV4cCI6MTc2ODQyODA4Nn0.uNz099lY0MWRkorogrtwWwucp9WzC_D84Vgnjh4a-SLxiDzgE425KohuPVWo5cwxYC7AH224CNQ2UCDNDtC6Kw";
-            	token="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaHVydXZhbGFrMDFAZ21haWwuY29tIiwiaWF0IjoxNzY4NTczNTg3LCJleHAiOjE3Njg2MDIzODd9.K_lkyyFK_f0X7QcMBq5rksFgLnUKhpTnr4BkO85T85PRe5h3K7ZusFI8VarjIyIv19m46XyLPCIWf7MAaAIc9g";
-            }
+             System.out.println("The token value is empty....");
+             }
             return token;
         }
 
@@ -93,7 +96,9 @@ public class TokenManager {
             token = null;
             userId = null;
         }
-    }
+   }
+    
+}
    
 
 
@@ -108,4 +113,3 @@ public class TokenManager {
 
 
 
-}
