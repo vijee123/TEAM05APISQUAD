@@ -60,7 +60,7 @@ public class ProgramRequest extends CommonUtils{
 		else if(scenarioName.contains("InvalidBaseURI")) {
 			RestAssured.baseURI = endpoints.getString("invalidBaseUrl");
 			return given()
-					.header("Authorization", "Bearer " + TokenManager1.getToken());
+					.header("Authorization", "Bearer " + TokenManager.getToken());
 		}
 
 		// Set content type from currentRow
