@@ -12,10 +12,13 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import commons.Commons;
+
 public class ExcelUtils {
-	
+
 	  public static List<Map<String, String>> readExcelData(String filePath, String sheetName) throws IOException {
 	        FileInputStream fis = new FileInputStream(filePath);
 	        Workbook workbook = new XSSFWorkbook(fis);
@@ -97,4 +100,24 @@ public class ExcelUtils {
 	    	} 
 	    } 
 	    }
+	    
+	    public static int getColumnIndex(String columnName) {
+	        try (FileInputStream fis = new FileInputStream(CommonUtils.endpoints.getString("excelPath"));
+	             Workbook workbook = WorkbookFactory.create(fis)) {
+	            Sheet sheet = workbook.getSheet("User");
+	            Row headerRow = sheet.getRow(0);
+	            if (headerRow == null) throw new RuntimeException("Header row is missing");
+	            for (Cell cell : headerRow) {
+	                if (cell.getStringCellValue().trim().equalsIgnoreCase(columnName)) {
+	                    // :star: PRINT HERE — inside the loop, inside the if
+	                    System.out.println("Column index for " + columnName + ": " + cell.getColumnIndex());
+	                    return cell.getColumnIndex();
+	                }
+	            }
+	            throw new RuntimeException("Column '" + columnName + "' not found in sheet 'User'");
+	        } catch (IOException e) {
+	            throw new RuntimeException("Error reading Excel file", e);
+	        }
+	    }
+	    
 }

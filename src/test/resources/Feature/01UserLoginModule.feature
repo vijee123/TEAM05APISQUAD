@@ -6,7 +6,7 @@
   Background:
     Given Admin sets No Auth
 
-  @Adminlogin
+  @UserLogin
   Scenario Outline: Admin login token generation
     Given Admin creates request with "<ScenarioName>"
     When Admin calls login HTTPS method with endpoint
@@ -15,10 +15,10 @@
     Examples:
       | ScenarioName                    |
       | valid credentials               |
-     | invalid method					|
+      | invalid method					|
       | special chars in email          |
-     | special chars in password       |
-     | numbers in email                |
+      | special chars in password       |
+      | numbers in email                |
       | numbers in password             |
       | null password                   |
       | null email                      |

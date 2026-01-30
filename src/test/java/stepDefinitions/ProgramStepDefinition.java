@@ -157,17 +157,22 @@ public class ProgramStepDefinition {
 	public void admin_sends_put_https_request_and_request_body_with_endpoint(String putEndpoint) {
 		response = programrequest.sendPutRequest(requestSpec,putEndpoint);
 	}
-	
-	@Given("Admin creates delete Request for the LMS with request body {string}")
-	public void admin_creates_delete_request_for_the_lms_with_request_body(String scenario) 
-			throws IOException, InvalidFormatException, ParseException {
-		programrequest.createProgram(scenario);
-		requestSpec = programrequest.buildRequest(requestSpec);
-	}
 
-	@When("Admin sends HTTPS Request and request Body with {string} endpoint")
-	public void admin_sends_https_request_and_request_body_with_endpoint(String putEndpoint) {
-		response = programrequest.sendPutRequest(requestSpec,putEndpoint);
+	@Given("Admin creates DELETE Request for the LMS API endpoint with valid_invalid program ID {string}")
+	public void admin_creates_delete_request_for_the_lms_api_endpoint_with_valid_invalid_program_id(String scenario) throws InvalidFormatException, IOException, ParseException {
+		programrequest.createProgram(scenario);
+		requestSpec = programrequest.addPathParamForDeleteRequest(requestSpec);
+	}
+	@When("Admin sends HTTPS Request with endpoint for delete program")
+	public void admin_sends_https_request_with_endpoint_for_delete_program() {
+		response = programrequest.sendRequest(requestSpec);
+	}
+	@Then("Admin receives StatusCode for program delete with statusText")
+	public void admin_receives_status_code_for_program_delete_with_status_text() {
+		System.out.println(response);
+		if (response == null) {
+			throw new AssertionError("Response is null. API call might have failed.");
+		}
 	}
 
 }

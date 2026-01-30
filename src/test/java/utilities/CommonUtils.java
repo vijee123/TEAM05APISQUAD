@@ -22,9 +22,7 @@ public class CommonUtils {
     public static String baseURI = endpoints.getString("baseUrl");
     public static String filePath = endpoints.getString("excelPath");
 
-    // ============================================================
-    // EXISTING METHODS (unchanged)
-    // ============================================================
+    
 
     public static Map<String, String> getCurrentRow(String scenario, String sheetName) {
         try {
@@ -205,22 +203,18 @@ public class CommonUtils {
         } catch (Exception e) {
             throw new RuntimeException("Failed to write PUT response to Excel", e);
         }
+        
     }
-    
-    
+
     public static void validateGetResponseSchema(Response response, String scenario) {
 	    String schemaPath;
-	    
+	   
 	    if (scenario.contains("valid Program Id")) {
 	        schemaPath = endpoints.getString("getBatchesByProgramIdSchemaPath");
-//	    } else if (scenario.contains("invalid")) {
-//	        schemaPath = endpoints.getString("errorResponseSchemaPath");
-//	    } else {
-//	        schemaPath = endpoints.getString("defaultSchemaPath");
-//	    }
-	    
-	    validateResponseSchema(response, schemaPath);
+	        validateResponseSchema(response, schemaPath);
 	    }
 	
 	}
+
 }
+

@@ -1,5 +1,8 @@
 package commons;
 
+import lombok.Data;
+
+@Data
 public class Commons {
 
 	private static int programId  ;
@@ -7,8 +10,10 @@ public class Commons {
 	private static float batchId;
 	private static String batchName;
 	private static String userId;
-	private static float batchId2;
-	private static String batchName2;
+	private static float batchId1;
+	private static String batchName1;
+	private static String emailId;
+    private static String emailId1;
 		
 	public static int getProgramId() {
 		return programId;
@@ -43,22 +48,39 @@ public class Commons {
 	public static void setuserId(String userId) {
 		Commons.userId = userId;
 	}
-	
-	public static float getbatchId1() {
-		return batchId;
+
+   
+    public static String getEmailId() {
+        return emailId;
+    }
+    public static void setEmailId(String userLoginEmail) {
+        Commons.emailId = userLoginEmail;  
+    }
+    
+    
+    public static String getUserEmailId() {
+    	return emailId1;
+    }
+    
+	public static void setUserEmailId(String getUserEmailId) {
+		
+		 Commons.emailId1 = getUserEmailId;
+		 
 	}
-	public static void setbatchId1(float batchId1) {
-		Commons.batchId = batchId1;
-	}
-	
-	public static String getbatchName1() {
-		return batchName;
-	}
-	public static void setbatchName1(String batchName1) {
-		Commons.batchName = batchName1;
-	}
-	
-	
-	
-	
+
+	public static float getBatchId1() {
+        return batchId1;
+    }
+
+    public static void setBatchId1(float batchId1) {
+        Commons.batchId1 = batchId1;
+    }
+
+    public static String getBatchName1() {
+        return batchName1;
+    }
+
+    public static void setBatchName1(String batchName1) {
+        Commons.batchName1 = batchName1;
+    }
 }

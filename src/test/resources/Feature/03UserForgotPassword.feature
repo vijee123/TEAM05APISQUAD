@@ -11,29 +11,24 @@ Feature: User Controller Operations
     Then Admin validates response
 
     Examples:
-      | ScenarioName           |
-      | valid email            |
-#      | special chars in confirmEmail |
-#      | invalid email          |
-#      | null body              |
-#      | invalid content        |
-#      | invalid endpoint       |
-
-
+      | ScenarioName                  |
+      | valid email                   |
+      | special chars in confirmEmail |
+      | invalid email                 |
+      | null body                     |
+      | invalid content               |
+      | invalid endpoint              |
 
   @ResetPassword
   Scenario Outline: Admin Reset Password Validation
     Given Admin sets the auth "<AuthType>"
-    And Admin creates reset password request with "<ScenarioName>"
+    Given Admin creates reset password request with "<ScenarioName>"
     When Admin calls login HTTPS method with endpoint
     Then Admin validates response
 
-    Examples: 
-      | ScenarioName                           | AuthType     |
-      | valid email and new password           | Bearer Token |
-#      | valid email and old password           | No Auth      |
-#      | special characters in password         | Bearer Token |
-#      | invalid email                          | Bearer Token |
-      
-      
-      
+    Examples:
+      | ScenarioName                   | AuthType     |
+      | valid email and new password   | Bearer Token |
+      | valid email and old password   | No Auth      |
+      | special characters in password | Bearer Token |
+      | invalid email                  | Bearer Token |

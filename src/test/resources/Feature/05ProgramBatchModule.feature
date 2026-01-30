@@ -3,7 +3,7 @@ Feature: To test the API request of Batch Module
 
   Background: 
     Given Admin set Authorization for batch
-    
+   
       @postbatch
       Scenario Outline: Check if admin is able to create a Batch with valid/invalid details "<Scenario>"
       Given Admin creates Batch Request  with valid data in requestBody for "<Scenario>"
@@ -30,25 +30,27 @@ Feature: To test the API request of Batch Module
       
       
       
-      #@getbatchbyprogramid
-      Scenario Outline: Check if admin able to retrieve a batch with valid/invalid Program ID
-      Given Admin creates GET Request of Batch with valid or invalid Program Id for "<Scenario>"
-      When Admin sends Batch HTTPS Request with "<programId>" endpoint
-      Then Admin receives StatusCode for batch with statusText "<Scenario>"
-      
-      Examples:
+       
+  
+  @getbatchbyprogramid @vijitrial
+  Scenario Outline: Check if admin able to retrieve a batch with valid/invalid Program ID
+    Given Admin creates GET Request of Batch with valid or invalid Program Id for "<Scenario>"
+    When Admin sends Batch HTTPS Request with "<programId>" endpoint
+    Then Admin receives StatusCode for batch with statusText "<Scenario>"
+
+    Examples:
       | Scenario                          |
       | GetBatchByProgIdNoAuth            |
       | GetBatchByProgIdAlphaProgramId    |
       | GetBatchByProgIdinvalidEndpoint   |
       | GetBatchByProgIdDeletedProgramId  |
       | GetBatchByProgIdInvalidMethod     |
-      | GetBatchByProgIdInvalidPathParam  |
+		  | GetBatchByProgIdInvalidPathParam  |
       | GetBatchByProgIdValidProgramId    |
     
       
       
-      #@updateBatchByBatchId  
+     @updateBatchByBatchId  
       Scenario Outline: Check if admin is able to  delete a Batch  with valid/invalid details
       Given Admin creates Batch Request  with valid data in requestBody for "<Scenario>"
       When Admin sends Batch HTTPS Request with batchId endpoint
@@ -66,9 +68,7 @@ Feature: To test the API request of Batch Module
       
       
       
-      
-      
-      
+       
   #@deleteBatchByBatchId
   #Scenario Outline: Check if admin is able to  delete a Batch  with valid/invalid details
     #Given Admin creates delete a Batch Request for the LMS with request body "<scenario>"

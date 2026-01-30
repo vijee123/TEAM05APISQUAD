@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.testng.Assert;
 
+import commons.Commons;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,7 +21,7 @@ public class UserModuleSteps1 {
 	private UserRequest userRequest;
     private RequestSpecification requestSpec;
     private Response response;
-	
+	//createuser
 	@Given("Admin sets Bearer token")
 	public void admin_sets_bearer_token() {
 	   
@@ -44,17 +45,21 @@ public class UserModuleSteps1 {
 		// Send request using endpoint from Excel currentRow
         response = userRequest.sendRequest(requestSpec);
         // Optionally store response body details
-        userRequest.saveResponseBody(response);
+        userRequest.saveResponseBody(response, "User");
 	}
 	@Then("Admin receives StatusCode and response body for {string}")
 	public void admin_receives_status_code_and_response_body_for(String scenario) {
 		// Expected status code from Excel
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody().asString());
+		 { userRequest.saveResponseBody(response, "User");
+		 System.out.println(response.getStatusCode());
+			System.out.println(response.getBody().asString());}
+		 String userId = response.jsonPath().getString("userId");
+		 Commons.setuserId(userId);
 	
-	}//end1     @createuser
+	}//end1   
 	
-	//end2 @GetallUser
+	
+	// @GetallUser
 	@Given("Admin creates get request \\(all users) Request for the LMS API with {string}")
 	public void admin_creates_get_request_all_users_request_for_the_lms_api_with(String scenario) throws InvalidFormatException, IOException, ParseException {
 	   
@@ -71,7 +76,7 @@ public class UserModuleSteps1 {
 	public void admin_receives_status_code_with_status_text_for_getallusers(String string) {
 		System.out.println(response);
 	}
-//end3  	@GetActiveUsers
+//	@GetActiveUsers
 	@Given("Admin creates get request \\(active users) Request for the LMS API with {string}")
 	public void admin_creates_get_request_active_users_request_for_the_lms_api_with(String scenario) throws InvalidFormatException, IOException, ParseException {
 		userRequest = new UserRequest();
@@ -223,9 +228,3 @@ public class UserModuleSteps1 {
 	 
 	}
 }
-
-
-
-
-
-

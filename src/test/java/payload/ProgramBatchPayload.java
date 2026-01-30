@@ -17,12 +17,12 @@ import payload.ProgramBatchPayload;
 import pojo.ProgramBatchPojo;
 import utilities.CommonUtils;
 
-public class ProgramBatchPayload {	
-	
+
+public class ProgramBatchPayload {		
 
 		public List<Map<String, String>> excelData;
 	    private final Logger LOGGER = LogManager.getLogger(ProgramBatchPayload.class);
-	    String sheetName="Batch";
+	    public String sheetName="Batch";
 	
 	    
 	    public Map<String, Object> getDataFromExcel(String scenario) 
@@ -31,86 +31,89 @@ public class ProgramBatchPayload {
 	    	Map<String, String> currentRow = CommonUtils.getCurrentRow(scenario, sheetName);
           if (currentRow == null || currentRow.isEmpty()) {
                throw new IllegalArgumentException("No data found in Excel for scenario: " + scenario);
-           }
-          
-        
-          String batchName;
-          if ("ExistingBatchNameBatchPost".equalsIgnoreCase(scenario.trim()) || 
-       		    "InvalidBatchNameFormatBatchPost".equalsIgnoreCase(scenario.trim()) || 
-       		    "SequenceMoreThan99BatchPost".equalsIgnoreCase(scenario.trim())) {
-       		    batchName = currentRow.get("batchName");
-       		    if (batchName == null || batchName.isEmpty()) {
-       		        throw new IllegalArgumentException("Batch name is missing in Excel for scenario: " + scenario);
-       		    }
-       		    LOGGER.info("Using batch name from Excel for scenario '{}': {}", scenario, batchName);
-       		    
-       		} else if ("MissingBatchNameBatchPost".equalsIgnoreCase(scenario.trim())) {
-       		    batchName = " "; 
-       		    LOGGER.info("Setting empty batchName for 'MissingBatchNamePost' test scenario");
-       		    
-       		} else {
-       		     Random random = new Random();
-       		    String randomDigits = String.format("%02d", random.nextInt(100000));
-       		    batchName = "APITeam5Batch" + randomDigits;
-       		    LOGGER.info("Auto-generated batch name for scenario '{}': {}", scenario, batchName);
-       		}
-           
-
-          String batchStatus = currentRow.get("batchStatus");
-          if ("MissingMandatoryFieldStatusBatchPost".equalsIgnoreCase(scenario.trim())) {
-              batchStatus = ""; 
-              LOGGER.info("Setting empty batchStatus for 'MissingMandatoryField' scenario");
-          } else if (batchStatus == null || batchStatus.isEmpty()) {
-              batchStatus = "Active";
-              LOGGER.info("Using default batchStatus: 'Active' for batch: {}", batchName);
           }
 
-         LOGGER.info("Final batchStatus set to: '{}'", batchStatus);
-           
-          String batchDescription = currentRow.get("batchDescription");
-          
-          int batchNoOfClasses;
-          String batchNoOfClassesStr = currentRow.get("batchNoOfClasses");
-
-         if (batchNoOfClassesStr == null || batchNoOfClassesStr.trim().isEmpty()) {
-       	  	batchNoOfClasses = 0; 
-         } else {
-              batchNoOfClassesStr = batchNoOfClassesStr.trim();
-              if (batchNoOfClassesStr.contains(".")) {
-                  batchNoOfClassesStr = batchNoOfClassesStr.substring(0, batchNoOfClassesStr.indexOf("."));
-              }
-                 batchNoOfClasses = Integer.parseInt(batchNoOfClassesStr);
-           }
-          
-          
-          int programId;
-          if ("InactiveProgIdBatchPost".equalsIgnoreCase(scenario.trim())) {
-                       // Only for "Inactive progId" scenario, use Excel programId
-                       String programIdStr = currentRow.get("programId");
-                       if (programIdStr == null || programIdStr.isEmpty()) {
-                       	programId = 0;
-                       //    throw new IllegalArgumentException("programId is missing in Excel for 'Inactive progId' scenario");
-                       }
-                    
-                       programIdStr = programIdStr.trim();
-                       if (programIdStr.contains(".")) {
-                           programIdStr = programIdStr.substring(0, programIdStr.indexOf("."));
-                       }
-                       programId = Integer.parseInt(programIdStr);
-                       LOGGER.info("Using Excel programId for 'Inactive progId' scenario: {}", programId);
-                   } else {
-                       // For ALL OTHER scenarios (including "Valid details"), use Commons programId
-                       programId = Commons.getProgramId();
-                       LOGGER.info("Using Commons programId for scenario '{}': {}", scenario.trim(), programId);
-              }
+       String batchName;
+       if ("ExistingBatchNameBatchPost".equalsIgnoreCase(scenario.trim()) ||
+    		    "InvalidBatchNameFormatBatchPost".equalsIgnoreCase(scenario.trim()) ||
+    		    "SequenceMoreThan99BatchPost".equalsIgnoreCase(scenario.trim())) {
+    		    batchName = currentRow.get("batchName");
+    		    if (batchName == null || batchName.isEmpty()) {
+    		        throw new IllegalArgumentException("Batch name is missing in Excel for scenario: " + scenario);
+    		    }
+    		    LOGGER.info("Using batch name from Excel for scenario '{}': {}", scenario, batchName);
+    		  
+    		} else if ("MissingBatchNameBatchPost".equalsIgnoreCase(scenario.trim())) {
+    		    batchName = " ";
+    		    LOGGER.info("Setting empty batchName for 'MissingBatchNamePost' test scenario");
+    		  
+    		} else {
+    		     Random random = new Random();
+    		    String randomDigits = String.format("%02d", random.nextInt(100000));
+    		    batchName = "APITeam5Batch" + randomDigits;
+    		    LOGGER.info("Auto-generated batch name for scenario '{}': {}", scenario, batchName);
+    		}
+       
+       String batchStatus = currentRow.get("batchStatus");
+       if ("MissingMandatoryFieldStatusBatchPost".equalsIgnoreCase(scenario.trim())) {
+           batchStatus = "";
+           LOGGER.info("Setting empty batchStatus for 'MissingMandatoryField' scenario");
+       } else if (batchStatus == null || batchStatus.isEmpty()) {
+           batchStatus = "Active";
+           LOGGER.info("Using default batchStatus: 'Active' for batch: {}", batchName);
+       }
+      LOGGER.info("Final batchStatus set to: '{}'", batchStatus);
       
-            ProgramBatchPojo batch = new ProgramBatchPojo(
-               batchDescription, 
-               batchName, 
-               batchNoOfClasses, 
-               batchStatus, 
-               programId
-           );
+      
+       String batchDescription = currentRow.get("batchDescription");
+       
+       
+       int batchNoOfClasses;
+       String batchNoOfClassesStr = currentRow.get("batchNoOfClasses");
+      if (batchNoOfClassesStr == null || batchNoOfClassesStr.trim().isEmpty()) {
+    	  	batchNoOfClasses = 0;
+      } else {
+           batchNoOfClassesStr = batchNoOfClassesStr.trim();
+           if (batchNoOfClassesStr.contains(".")) {
+               batchNoOfClassesStr = batchNoOfClassesStr.substring(0, batchNoOfClassesStr.indexOf("."));
+
+              }
+           batchNoOfClasses = Integer.parseInt(batchNoOfClassesStr);
+      }
+      
+    
+      int programId;
+      if ("InactiveProgIdBatchPost".equalsIgnoreCase(scenario.trim())) {
+          // Only for "Inactive progId" scenario, use Excel programId
+          String programIdStr = currentRow.get("programId");
+          if (programIdStr == null || programIdStr.isEmpty()) {
+              programId = 0;
+          } else {
+              programIdStr = programIdStr.trim();
+              if (programIdStr.contains(".")) {
+                  programIdStr = programIdStr.substring(0, programIdStr.indexOf("."));
+              }
+              try {
+                  programId = Integer.parseInt(programIdStr);
+              } catch (NumberFormatException e) {
+                  programId = 0;
+                  LOGGER.warn("Invalid programId format, setting to 0: {}", programIdStr);
+              }
+          }
+          LOGGER.info("Using Excel programId for 'Inactive progId' scenario: {}", programId);
+      } else {
+          // For ALL OTHER scenarios (including "Valid details"), use Commons programId
+          programId = Commons.getProgramId();
+          LOGGER.info("Using Commons programId for scenario '{}': {}", scenario.trim(), programId);
+      }
+      
+            ProgramBatchPojo batch = new ProgramBatchPojo();
+            
+            batch.setBatchDescription(batchDescription);
+            batch.setBatchName(batchName);
+            batch.setBatchNoOfClasses(batchNoOfClasses);
+            batch.setBatchStatus(batchStatus);
+            batch.setProgramId(programId);
            
            LOGGER.info("Created batch from Excel: {}", batchName);
            Map<String, Object> batchDetails = new HashMap<>();
@@ -118,8 +121,19 @@ public class ProgramBatchPayload {
            batchDetails.put("currentRow", currentRow);           
            
            return batchDetails;
-          }
+           
+      }
+	    
+}
+           
+           
+      
+           
+      
+         
+           
+           
 	
 
 
-}
+

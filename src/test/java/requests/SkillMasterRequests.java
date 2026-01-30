@@ -7,6 +7,7 @@ import pojo.SkillMasterPojo;
 import utilities.CommonUtils;
 import utilities.ExcelUtils;
 import utilities.TokenManager;
+import utilities.TokenManager.TokenManager1;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 public class SkillMasterRequests {
 
     private final String baseUrl = CommonUtils.baseURI;
-    private final String bearerToken = TokenManager.getToken();
+    private final String bearerToken = TokenManager1.getToken();
 
     public SkillMasterRequests() {
         RestAssured.baseURI = baseUrl;

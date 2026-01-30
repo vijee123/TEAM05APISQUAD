@@ -8,6 +8,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
+import java.util.Locale;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pojo.UserPojo;  // Import the User POJO with inner classes
 import utilities.CommonUtils;
@@ -16,6 +19,7 @@ import utilities.CommonUtils;
 public class UserPayload extends CommonUtils {
 
 	private static final Logger LOGGER = LogManager.getLogger(UserPayload.class);
+	
 	public Map<String, Object> getDataFromExcel(String scenario)
 	        throws IOException, ParseException, InvalidFormatException {
 	    Map<String, Object> userDetails = new HashMap<>();
@@ -24,7 +28,9 @@ public class UserPayload extends CommonUtils {
 	        LOGGER.warn("No data found in Excel for scenario: " + scenario);
 	        return userDetails;
 	    }
+	   
 	    UserPojo userPojo = new UserPojo();
+
 	    // Basic fields
 	    userPojo.setUserComments(currentRow.get("userComments"));
 	    userPojo.setUserEduPg(currentRow.get("userEduPg"));
@@ -34,7 +40,9 @@ public class UserPayload extends CommonUtils {
 	    userPojo.setUserLinkedinUrl(currentRow.get("userLinkedinUrl"));
 	    userPojo.setUserLocation(currentRow.get("userLocation"));
 	    userPojo.setUserMiddleName(currentRow.get("userMiddleName"));
-	    userPojo.setUserPhoneNumber(currentRow.get("userPhoneNumber"));
+	   userPojo.setUserPhoneNumber(currentRow.get("userPhoneNumber"));
+	  
+
 	    userPojo.setUserTimeZone(currentRow.get("userTimeZone"));
 	    userPojo.setUserVisaStatus(currentRow.get("userVisaStatus"));
 	    // Parse userRoleMaps JSON
@@ -54,11 +62,25 @@ public class UserPayload extends CommonUtils {
 	    if (loginJson != null && !loginJson.trim().isEmpty()) {
 	        try {
 	            UserPojo.UserLogin userLogin = new UserPojo.UserLogin(loginJson);
-	            userPojo.setUserLogin(userLogin);
+	           userPojo.setUserLogin(userLogin);
+	         //   userPojo.setUserLogin(new UserPojo.UserLogin(loginJson));
+
 	        } catch (Exception e) {
 	            LOGGER.error("Failed to parse userLogin JSON for scenario: " + scenario, e);
 	        }
 	    }
+	    	/*try {
+	    	    UserPojo.UserLogin userLogin = new UserPojo.UserLogin(loginJson);
+
+	    	    // Inject random email
+	    	    String randomEmail = faker.name().firstName().toLowerCase() + faker.number().digits(3) + "@gmail.com";
+	    	    userLogin.setUserLoginEmail(randomEmail);
+
+	    	    userPojo.setUserLogin(userLogin);
+	    	} catch (Exception e) {
+	    	    LOGGER.error("Failed to parse userLogin JSON for scenario: " + scenario, e);
+	    	}*/
+
 	    LOGGER.info("Read User details from Excel file for scenario '{}': {}", scenario, userPojo);
 	    userDetails.put("userPojo", userPojo);
 	    userDetails.put("currentRow", currentRow);

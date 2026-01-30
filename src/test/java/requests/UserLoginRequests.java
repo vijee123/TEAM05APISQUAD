@@ -7,6 +7,7 @@ import payload.UserLoginPayload;
 import pojo.UserLoginPojo;
 import utilities.CommonUtils;
 import utilities.TokenManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,22 +24,6 @@ public class UserLoginRequests extends CommonUtils {
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json");
     }
-
-    /**
-     * Handles dynamic authentication based on the AuthType column in the Feature file.
-     */
-    public RequestSpecification applyAuthentication(String authType, RequestSpecification reqSpec) {
-        if (authType.equalsIgnoreCase("Bearer Token")) {
-            // Pulls the token stored during the login process
-            return reqSpec.header("Authorization", "Bearer " + TokenManager.getToken());
-        } else if (authType.equalsIgnoreCase("Old Token") || authType.equalsIgnoreCase("Invalid Token")) {
-            // Hardcoded expired/invalid token for negative testing scenarios
-            return reqSpec.header("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.expired_token_data");
-        }
-        // "No Auth" returns the spec as is
-        return reqSpec;
-    }
-
     /**
      * Loads Login specific data using the Payload builder and Excel.
      */
@@ -85,13 +70,13 @@ public class UserLoginRequests extends CommonUtils {
         return reqSpec.body(resetData);
     }
 
-    /**
-     * Prepares Logout request by applying auth and setting an empty body.
-     */
-    public RequestSpecification buildLogoutRequest(RequestSpecification reqSpec, String authType) {
-        reqSpec = applyAuthentication(authType, reqSpec);
-        return reqSpec.body(""); 
-    }
+//    /**
+//     * Prepares Logout request by applying auth and setting an empty body.
+//     */
+//    public RequestSpecification buildLogoutRequest(RequestSpecification reqSpec, String authType) {
+//        reqSpec = applyAuthentication(authType, reqSpec);
+//        return reqSpec.body(""); 
+//    }
 
     /**
      * Sends the request to the endpoint specified in the Excel sheet.
@@ -105,10 +90,54 @@ public class UserLoginRequests extends CommonUtils {
         return CommonUtils.getResponse(reqSpec, endpoint);
     }
 
-    /**
-     * Extracts and stores the Token and UserID if the login is successful.
-     */
     public void saveToken(Response response) {
+        if (response.getStatusCode() == 200 || response.getStatusCode() == 201) {
+            // Extract the token and userId using jsonPath
+            String token = response.jsonPath().getString("token");
+            String uId = response.jsonPath().getString("userId");
+            
+            // Update TokenManager so subsequent scenarios can use these values
+            if (token != null && !token.isEmpty()) {
+                TokenManager.setToken(token); // Fixes the "Login Token is missing" error
+                System.out.println("Token saved successfully.");
+            }
+            
+            if (uId != null && !uId.isEmpty()) {
+                TokenManager.setUserId(uId); // Restores the userId logic
+                System.out.println("User ID saved successfully: " + uId);
+            }
+        } else {
+            System.out.println("Request failed. Token and UserID not saved.");
+        }
+    }
+
+//    /**
+//     * Parses the Excel Status Code (handles cases like 200.0).
+//     */
+//    public int getStatusCode() {
+//        String statusCodeStr = currentRow.get("StatusCode");
+//        return (int) Double.parseDouble(statusCodeStr);
+//    }
+
+    
+    public int getStatusCode() {
+        String statusCodeStr = currentRow.get("StatusCode");
+
+        if (statusCodeStr == null || statusCodeStr.trim().isEmpty()) {
+            throw new RuntimeException(
+                "StatusCode is missing in Excel for scenario: " + currentRow.get("ScenarioName")
+            );
+        }
+
+        return (int) Double.parseDouble(statusCodeStr.trim());
+    }
+    
+    public String getStatusText() {
+        return currentRow.get("StatusText");
+    }
+
+
+	public void saveToken1(Response response) {
         if (response.getStatusCode() == 200 || response.getStatusCode() == 201) {
             // Extracting values using jsonPath
             String token = response.jsonPath().getString("token");
@@ -126,19 +155,8 @@ public class UserLoginRequests extends CommonUtils {
             }
         } else {
             System.out.println("Login failed with status Token and UserID not saved.");
-        }
-    }
-
-    /**
-     * Parses the Excel Status Code (handles cases like 200.0).
-     */
-    public int getStatusCode() {
-        String statusCodeStr = currentRow.get("StatusCode");
-        return (int) Double.parseDouble(statusCodeStr);
-    }
-
-    public String getStatusText() {
-        return currentRow.get("StatusText");
-    }
+        }		
+	}
    
+
 }

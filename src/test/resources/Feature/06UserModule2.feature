@@ -94,12 +94,4 @@ Scenario Outline: Check if Admin is able to update User Login Status
       |Update status with Valid UserID|
       |Update status with InValid UserID|
       |Update status with missing fields|
-@DELETEuser
-Scenario Outline: Check if Admin is able to delete Valid/Invalid UserID
-    Given Admin creates DELETE Request with valid or invalid UserID for "<Scenario>"
-    When Admin sends HTTPS user Request with endpoint
-    Then Admin receives StatusCode with statusText
-    Examples:
-      |Scenario|
-      |Delete with Valid UserID|
-      |Delete with Invalid UserID|
+

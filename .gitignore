@@ -12,3 +12,9 @@ target/
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+allure-results/
+test-output/
+Team5APISquadLog.txt
+testng.xml
+Jenkinsfile 

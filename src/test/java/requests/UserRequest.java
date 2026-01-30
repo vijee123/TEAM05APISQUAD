@@ -18,7 +18,9 @@ import payload.ProgramPayload;
 import payload.UserPayload;
 import pojo.UserPojo;
 import utilities.CommonUtils;
+import utilities.ExcelUtils;
 import utilities.TokenManager;
+import utilities.TokenManager.TokenManager1;
 
 public class UserRequest extends CommonUtils {
 	private List<Map<String, String>> excelData;
@@ -32,7 +34,7 @@ public class UserRequest extends CommonUtils {
         RestAssured.baseURI = CommonUtils.endpoints.getString("baseUrl");
         TokenManager.setToken("");
         return given()
-                .header("Authorization", "Bearer " + TokenManager.getToken());
+                .header("Authorization", "Bearer " + TokenManager1.getToken());
     }
     // ---------------- LOAD USER FROM EXCEL ----------------
     public void createUser(String scenario)
@@ -59,7 +61,7 @@ public class UserRequest extends CommonUtils {
         } else if (scenarioName.contains("InvalidBaseURI")) {
             RestAssured.baseURI = CommonUtils.endpoints.getString("invalidBaseUrl");
             requestSpec = given()
-                    .header("Authorization", "Bearer " + TokenManager.getToken());
+                    .header("Authorization", "Bearer " + TokenManager1.getToken());
         }
         // Always set content type for LMS POST
         requestSpec.contentType(currentRow.get("ContentType"));
@@ -91,8 +93,65 @@ public class UserRequest extends CommonUtils {
         return currentRow.get("StatusText");
     }
     // ---------------- SAVE RESPONSE ----------------
-    public void saveResponseBody(Response response) {
+ /*   public void saveResponseBody(Response response) {
         String userId = response.jsonPath().getString("userId");
         Commons.setuserId(userId);
     }
+        
+        public void saveToken(Response response) {
+            if (response.getStatusCode() == 200 || response.getStatusCode() == 201) {
+                String token = response.jsonPath().getString("token");
+                String uId = response.jsonPath().getString("userId");
+                
+                if (token != null) TokenManager.setToken(token);
+                if (uId != null) TokenManager.setUserId(uId);
+            }
+        
+    }*/
+        
+//    public void saveResponseBody(Response response) {
+//        String userId = response.jsonPath().getString("user.userId");
+//        Commons.setuserId(userId);
+//
+//        try {
+//            String excelPath = CommonUtils.filePath;
+//            String sheetName = CommonUtils.sheetName;
+//
+//            int rowIndex = Integer.parseInt(currentRow.get("RowIndex"));
+//            int colIndex = ExcelUtils.getColumnIndex("userId");
+//
+//            ExcelUtils.writeCell(excelPath, sheetName, rowIndex, colIndex, userId);
+//            System.out.println("Extracted userId: " + userId); 
+//            System.out.println("Excel path: " + excelPath); 
+//            System.out.println("Sheet name: " + sheetName); 
+//            System.out.println("Row index: " + rowIndex); 
+//            System.out.println("Column index: " + colIndex);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to write userId to Excel", e);
+//        }
+//    }
+    
+    public void saveResponseBody(Response response, String sheetName) {
+        String userId = response.jsonPath().getString("user.userId");
+        Commons.setuserId(userId);
+
+        try {
+            String excelPath = CommonUtils.filePath;
+
+            int rowIndex = Integer.parseInt(currentRow.get("RowIndex"));
+            int colIndex = ExcelUtils.getColumnIndex("userId");
+
+            ExcelUtils.writeCell(excelPath, sheetName, rowIndex, colIndex, userId);
+
+            System.out.println("Extracted userId: " + userId);
+            System.out.println("Excel path: " + excelPath);
+            System.out.println("Sheet name: " + sheetName);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to write userId to Excel", e);
+        }
+    }
+
+
 }
